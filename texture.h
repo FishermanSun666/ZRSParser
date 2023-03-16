@@ -13,10 +13,10 @@ extern std::map<std::string, Texture*> glTexturePool;
 class Texture {
 public:
 	Texture(ParseNode* loadNode) {
-		if (loadNode->GetName() != TEXTURE_OBJECT) { throw CODE_ERROR; }
+		if (loadNode->GetType() != TEXTURE_OBJECT) { throw CODE_ERROR; }
 		auto attrs = loadNode->GetChildrens();
 		for (auto it : attrs) {
-			if ("name" == it->GetName()) { 
+			if ("name" == it->GetType()) { 
 				name = it->GetContext();
 			}
 			else if ("file") {
@@ -30,7 +30,7 @@ public:
 	}
 	~Texture() {}
 
-	bool LoadTexture(); //todo
+	bool LoadTexture() {} //todo
 protected:
 	std::string name, file;
 };

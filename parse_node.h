@@ -3,7 +3,7 @@
 
 class ParseNode {
 public:
-	ParseNode(const std::string& n) : name(n) {}
+	ParseNode(const std::string& n) : type(n) {}
 	~ParseNode() {
 		for (auto it : childrens) {
 			if (NULL != it) {
@@ -13,7 +13,7 @@ public:
 		}
 	}
 
-	std::string GetName() { return name; }
+	std::string GetType() { return type; }
 	std::string GetContext() { return context; }
 	std::vector<ParseNode*> GetChildrens() { return childrens; }
 
@@ -21,8 +21,17 @@ public:
 	void Parse(std::stringstream& input);
 
 	void PrintNode(int level);
+
+	ParseNode* GetChildNode(const std::string& name) {
+		for (auto it : childrens) {
+			if (it->GetType() == name) {
+				return it;
+			}
+		}
+		return NULL;
+	}
 protected:
-	std::string name, context;
+	std::string type, context;
 	std::vector<ParseNode*> childrens;
 };
 

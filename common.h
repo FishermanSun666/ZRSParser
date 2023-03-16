@@ -19,6 +19,8 @@ extern std::vector<float> String2FloatVector(const char divide, const std::strin
 
 extern std::pair<float, float> String2FloatPair(const char divide, const std::string str);
 
+extern bool String2Bool(const std::string& str);
+
 extern std::string Float2String(const float &value);
 
 extern std::string RemoveChar(char divide, std::string& str);

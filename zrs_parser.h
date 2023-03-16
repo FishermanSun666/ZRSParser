@@ -22,6 +22,7 @@ public:
 protected:
 	std::string name;
 	ParseNode* parseRoot;
+
 	Scene* scene;
 	std::vector<Object*> objects;
 	std::vector<Dummy*> dummies;

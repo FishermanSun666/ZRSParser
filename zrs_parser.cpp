@@ -52,11 +52,19 @@ void ZRSParser::ParserFile() {
 void ZRSParser::LoadFromParseNodes() {
 	if (NULL == parseRoot) { throw CODE_ERROR; }
 	auto nodes = parseRoot->GetChildrens();
-	for (auto it : nodes) {
-		if (SCENE_OBJECT == it->GetName()) {
-			scene = new Scene(it);
+	try
+	{
+		for (auto it : nodes) {
+			if (SCENE_OBJECT == it->GetType()) { scene = new Scene(it); }
+			else if (OBJECT == it->GetType()) { objects.push_back(new Object(it)); }
+			else if (SPINNER_OBJECT == it->GetType()) { spinners.push_back(new Spinner(it)); }
+			else if (DUMMY_OBJECT == it->GetType()) { dummies.push_back(new Dummy(it)); }
+			else {
+				throw MEMBER_MISSING;
+			}
 		}
 	}
+	catch (ErrorCode code) { throw code; }
 }
 
 // Save mesh as OBJ file.

@@ -34,6 +34,15 @@ extern std::pair<float, float> String2FloatPair(const char divide, const std::st
 	}
 }
 
+extern bool String2Bool(const std::string& str) {
+	if (str == "on") {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 extern std::string Float2String(const float &value) {
 	std::ostringstream oss;
 	oss << std::fixed << std::setprecision(DECIMAL_POINT_LIMIT) << value;

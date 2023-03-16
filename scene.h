@@ -11,35 +11,39 @@
 const std::string SCENE_OBJECT = "scene";
 
 extern std::map<std::string, Material*> glMaterialPool;
+extern std::map<std::string, Mesh*> glMeshPool;
 
-class Scene {
+class Scene : public Node {
 public:
-	Scene(ParseNode* loadNode) {
+	Scene(ParseNode* loadNode) : Node(loadNode->GetChildNode(NODE_OBJECT)), textures(), materials(), meshes() {
 		if (!loadNode) { throw CODE_ERROR; }
-		if (loadNode->GetName() != SCENE_OBJECT) { throw CODE_ERROR; }
+		if (loadNode->GetType() != SCENE_OBJECT) { throw CODE_ERROR; }
 		auto members = loadNode->GetChildrens();
 		//Load all member
 		try {
 			for (auto it : members) {
-				if (NODE_OBJECT == it->GetName()) {
-					Node* node = new Node(it);
-					nodes.push_back(node);
-				}
-				else if (TEXTURE_OBJECT == it->GetName()) {
+				if (TEXTURE_OBJECT == it->GetType()) {
 					Texture* tex = new Texture(it);
 					textures.push_back(tex);
 				}
-				else if (MATERIAL_OBJECT == it->GetName()) {
+				else if (MATERIAL_OBJECT == it->GetType()) {
 					Material* mat = new Material(it);
 					materials.push_back(mat);
 				}
-				else if (MESH_OBJECT == it->GetName()) {
+				else if (MESH_OBJECT == it->GetType()) {
 					Mesh* mesh = new Mesh(it);
 					meshes.push_back(mesh);
+				}
+				else if (NODE_OBJECT == it->GetType()) {
+					continue;
+				}
+				else {
+					throw SCENE_ATTRIBUTE_MISSING;
 				}
 			}
 		}
 		catch (int code) { throw code; }
+		glNodePool[name] = this;
 	}
 	~Scene(){
 		auto delete_ptr = [](auto& ptr) {
@@ -48,13 +52,10 @@ public:
 				ptr = NULL;
 			}
 		};
-		for (auto it : nodes) { delete_ptr(it); }
+
 		for (auto it : textures) { delete_ptr(it); }
 		for (auto it : materials) { delete_ptr(it); }
 		for (auto it : meshes) { delete_ptr(it); }
-		for (auto it : objects) { delete_ptr(it); }
-		for (auto it : dummies) { delete_ptr(it); }
-		for (auto it : spinners) { delete_ptr(it); }
 	}
 
 	std::string ConvertMesh2ObjString() {
@@ -68,11 +69,7 @@ public:
 	}
 
 protected:
-	std::vector<Node*> nodes;
 	std::vector<Texture*> textures;
 	std::vector<Material*> materials;
 	std::vector<Mesh*> meshes;
-	std::vector<Object*> objects;
-	std::vector<Dummy*> dummies;
-	std::vector<Spinner*> spinners;
 };

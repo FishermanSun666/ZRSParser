@@ -7,32 +7,31 @@ const std::string NODE_OBJECT = "node";
 
 class Node;
 
-static std::map<std::string, Node*> glNodePool;
+extern std::map<std::string, Node*> glNodePool;
 
 class Node {
 public:
+	Node(){}
 	Node(ParseNode* loadNode){
 		if (!loadNode) { throw CODE_ERROR; }
 
 		auto attributes = loadNode->GetChildrens();
 		for (auto it : attributes) {
-			if (!SetMemberValue(it->GetName(), it->GetContext())) { throw NODE_ATTRIBUTE_MISSING; }
+			if (!SetMemberValue(it->GetType(), it->GetContext())) { throw NODE_ATTRIBUTE_MISSING; }
 		}
 		//Put into the node pool
-		glNodePool[loadNode->GetName()] = this;
+		glNodePool[name] = this;
 	}
 
 	~Node() {
-
 		for (auto it : children) {
 			if (it != NULL) {
-				delete it;
 				it = NULL;
 			}
 		}
 	}
 
-	bool SetMemberValue(std::string key, std::string value) {
+	virtual bool SetMemberValue(std::string key, std::string value) {
 		if ("name" == key) { name = value; }
 		else if ("parent" == key) {
 			auto it = glNodePool.find(value);

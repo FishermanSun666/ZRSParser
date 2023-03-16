@@ -26,7 +26,7 @@ void ParseNode::Parse(std::stringstream& input) {
 }
 
 void ParseNode::PrintNode(int level) {
-	std::cout << std::string(level, '\t') << name << ":" << context << std::endl;
+	std::cout << std::string(level, '\t') << type << ":" << context << std::endl;
 	for (auto child : childrens) {
 		child->PrintNode(level + 1);
 	}

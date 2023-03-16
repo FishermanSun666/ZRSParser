@@ -3,26 +3,30 @@
 #include "common.h"
 #include "vector3.h"
 #include "vertex.h"
+#include "node.h"
 #include "parse_node.h"
 
 const std::string MESH_OBJECT = "mesh";
 
 class Mesh;
 
-static std::map<std::string, Mesh*> glMeshPool;
+extern std::map<std::string, Mesh*> glMeshPool;
+extern std::map<std::string, Node*> glNodePool;
 
-class Mesh {
+class Mesh : public Node {
 public:
-	Mesh(ParseNode* loadNode) {
+	Mesh() : Node() {}
+	Mesh(ParseNode* loadNode) : Node() {
 		if (!loadNode) { throw CODE_ERROR; }
-		if (loadNode->GetName() != MESH_OBJECT) { throw CODE_ERROR; }
+		if (loadNode->GetType() != MESH_OBJECT) { throw CODE_ERROR; }
 		auto attrs = loadNode->GetChildrens();
 		for (auto it : attrs) {
-			if (!SetMemberValue(it->GetName(), it->GetContext())) {
+			if (!SetMemberValue(it->GetType(), it->GetContext())) {
 				throw MESH_ATTRIBUTE_MISSING;
 			}
 		}
-		glMeshPool[loadNode->GetName()] = this;
+		glMeshPool[name] = this;
+		glNodePool[name] = this;
 	}
 	~Mesh() {}
 
