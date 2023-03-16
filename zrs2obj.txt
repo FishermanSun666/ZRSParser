@@ -1,0 +1,26 @@
+Convert ZRS files to OBJ model files
+====================================
+
+ZRS is the model format used by Z2's engine.
+
+To help visualize how the original models look we want to convert them to a format we can import in to 3DS Max.
+OBJ is a nice simple model format which is text based and can be read by most 3D modelling tools.
+OBJ Specification: http://en.wikipedia.org/wiki/Wavefront_.obj_file
+
+ZRS files can contain multiple meshes and use an XML-like format.
+We're mostly interested in the mesh() elements in the ZRS file, each mesh defines an individual mesh part of the whole model.
+
+The mesh() elements contain vertex and tri elements with the following parameters:
+vertex(positionx,positiony,positionz, texu,texv, normalx,normaly,normalz)
+tri(index1,index2,index3)
+
+Each tri element creates a triangle by indexing in to the list of vertices preceeding the tri list in the mesh() element.
+
+====================================
+
+Task: 
+Convert new_church_a.zrs to an OBJ file which can be loaded in to a 3D modelling tool.
+Although there are many OBJ viewers, we recommend using Visual Studio to preview your OBJ file after conversion.
+Focus just on mesh data, while it would be good to also extract material information that is not required for the visualisation.
+
+Hint: To impress the team keep it simple :-) Again if you can record the time it takes todo that would be great

@@ -17,7 +17,9 @@ public:
 		}
 		std::cout << std::endl;
 	}
+
 	~Animator(){}
+
 protected:
 	bool SetMemberValue(std::string key, std::string value) {
 		if ("framestep" == key) { framestep = std::stoi(value); }
