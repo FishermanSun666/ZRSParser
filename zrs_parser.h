@@ -6,6 +6,7 @@
 #include "error_code.h"
 #include "scene.h"
 #include "parse_node.h"
+#include "common.h"
 
 const std::string ZRS_FILE_EXT = "zrs";
 const std::string OBJ_FILE_EXT = "obj";

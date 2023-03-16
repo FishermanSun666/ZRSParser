@@ -26,7 +26,10 @@ public:
 	}
 	~Mesh() {}
 
-	std::string Convert2ObjString() {
+
+	std::string Convert2ObjString(float &index) {
+		//The vertex index of obj starts at 1
+		index++;
 		std::ostringstream objStream;
 		objStream << "o " << name << std::endl;
 		//position, texture, normal
@@ -40,20 +43,17 @@ public:
 			objStream << it.ConvertNormal2ObjFormate();
 		}
 		//face
-		int index = 0;
+		float maxIndex = 0;
 		for (auto it : triangles) {
-			if (0 == index) {
-				objStream << "f";
+			objStream << "f";
+			objStream << it.Convert2ObjectFormat(index);
+			float mi = it.GetMaxMember();
+			if (mi > maxIndex) {
+				maxIndex = mi;
 			}
-			objStream << it.Convert2ObjectFormat();
-			if (index >= 2) {
-				objStream << std::endl;
-				index = 0;
-				continue;
-			}
-			index++;
 		}
-		objStream << std::endl;
+		//Index postponement
+		index += maxIndex;
 		return objStream.str();
 	}
 

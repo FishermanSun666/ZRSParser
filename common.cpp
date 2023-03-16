@@ -36,7 +36,7 @@ extern std::pair<float, float> String2FloatPair(const char divide, const std::st
 
 extern std::string Float2String(const float &value) {
 	std::ostringstream oss;
-	oss << std::fixed << std::setprecision(DECIMAL_POINT_LIMIT + 1) << value;
+	oss << std::fixed << std::setprecision(DECIMAL_POINT_LIMIT) << value;
 	return oss.str();// CutTrimDecimalPlaces(oss.str(), DECIMAL_POINT_LIMIT);
 }
 

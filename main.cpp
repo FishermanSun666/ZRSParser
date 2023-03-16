@@ -1,5 +1,7 @@
 #include "zrs_parser.h"
 
+extern::std::map<std::string, Material*> glMaterialPool;
+
 void main() {
 	try {
 		ZRSParser* parser = new ZRSParser("new_church_a.zrs");

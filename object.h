@@ -3,6 +3,8 @@
 #include "mesh.h"
 #include "material.h"
 
+extern std::map<std::string, Material*> glMaterialPool;
+
 class Object {
 public:
 	Object() {}

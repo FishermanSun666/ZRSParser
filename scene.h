@@ -10,27 +10,32 @@
 
 const std::string SCENE_OBJECT = "scene";
 
+extern std::map<std::string, Material*> glMaterialPool;
+
 class Scene {
 public:
 	Scene(ParseNode* loadNode) {
 		if (!loadNode) { throw CODE_ERROR; }
-		// Iterate over all child nodes
 		if (loadNode->GetName() != SCENE_OBJECT) { throw CODE_ERROR; }
 		auto members = loadNode->GetChildrens();
+		//Load all member
 		try {
 			for (auto it : members) {
 				if (NODE_OBJECT == it->GetName()) {
 					Node* node = new Node(it);
 					nodes.push_back(node);
 				}
-				if (TEXTURE_OBJECT == it->GetName()) {
+				else if (TEXTURE_OBJECT == it->GetName()) {
 					Texture* tex = new Texture(it);
 					textures.push_back(tex);
+				}
+				else if (MATERIAL_OBJECT == it->GetName()) {
+					Material* mat = new Material(it);
+					materials.push_back(mat);
 				}
 				else if (MESH_OBJECT == it->GetName()) {
 					Mesh* mesh = new Mesh(it);
 					meshes.push_back(mesh);
-					mesh->Convert2ObjString();
 				}
 			}
 		}
@@ -55,8 +60,9 @@ public:
 	std::string ConvertMesh2ObjString() {
 		if (0 == meshes.size()) { return ""; }
 		std::ostringstream objStream;
+		float index = 0.0f;
 		for (auto it : meshes) {
-			objStream << it->Convert2ObjString();
+			objStream << it->Convert2ObjString(index);
 		}
 		return objStream.str();
 	}

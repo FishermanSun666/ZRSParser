@@ -6,6 +6,10 @@
 
 const std::string TEXTURE_OBJECT = "texture";
 
+class Texture;
+
+extern std::map<std::string, Texture*> glTexturePool;
+
 class Texture {
 public:
 	Texture(ParseNode* loadNode) {
@@ -22,6 +26,7 @@ public:
 				throw TEXTRUE_ATTRIBUTE_MISSING;
 			}
 		}
+		glTexturePool[name] = this;
 	}
 	~Texture() {}
 
